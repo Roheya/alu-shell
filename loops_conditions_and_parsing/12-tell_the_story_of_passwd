@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Parse Apache log and group by IP + HTTP code
+# Tell the story of /etc/passwd using a while loop
 
-awk '{count[$1" "$9]++} END {for (key in count) printf "%d %s\n", count[key], key}' apache-access.log | sort -nr
+while IFS=: read -r username password uid gid info home shell; do
+    echo "The user $username is part of the $gid gang, lives in $home and rides $shell. USER ID's place is protected by the passcode $password, more info about the user here: $info"
+done < /etc/passwd
 

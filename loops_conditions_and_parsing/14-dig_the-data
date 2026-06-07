@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # Group Apache log entries by IP and HTTP status code
-# Format: OCCURRENCE_NUMBER IP HTTP_CODE
-awk '{count[$1" "$9]++} END {for (key in count) printf "%d %s\n", count[key], key}' /var/log/apache2/access.log | sort -nr
+
+awk '{count[$1" "$9]++} END {for (key in count) printf "%d %s\n", count[key], key}' apache-access.log | sort -nr
 

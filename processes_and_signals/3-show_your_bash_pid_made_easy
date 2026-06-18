@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
-# Print PID and process name for processes with 'bash' in name, excluding this script
+# Display the PID and process name of processes containing "bash"
 
-mypid=$$
-parentpid=$PPID
-
-for pid in $(pgrep -f bash); do
-    if [ "$pid" != "$mypid" ] && [ "$pid" != "$parentpid" ]; then
-        # Read process name from /proc, no 'ps' used
-        if [ -r "/proc/$pid/comm" ]; then
-            name=$(cat /proc/$pid/comm)
+for pid in $(ls /proc | grep -E '^[0-9]+$'); do
+    if [ -r "/proc/$pid/comm" ]; then
+        name=$(cat "/proc/$pid/comm")
+        if echo "$name" | grep -q "bash"; then
             echo "$pid $name"
         fi
     fi
 done
+

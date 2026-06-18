@@ -6,8 +6,15 @@ file="${1:-access.log}"
 # Exit silently if file is missing or empty
 [ -s "$file" ] || exit 0
 
-awk '{if ($1 ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/ && $9 ~ /^[0-9]+$/) print $1, $9}' "$file" | \
-awk '{count[$1" "$2]++} END {for (key in count) print count[key], key}' | \
-sort -nr
-
+# Only process lines where $1 looks like an IP and $9 looks like a numeric HTTP code
+awk '
+    $1 ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/ && $9 ~ /^[0-9]+$/ {
+        count[$1" "$9]++
+    }
+    END {
+        for (key in count) {
+            print count[key], key
+        }
+    }
+' "$file" | sort -nr
 

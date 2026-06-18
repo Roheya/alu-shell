@@ -7,11 +7,15 @@ file="${1:-access.log}"
 [ -s "$file" ] || exit 0
 
 awk '
-    # Only process lines with a valid IP and numeric HTTP code
+    # Only process lines with a valid IPv4 address and numeric HTTP code
     $1 ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/ && $9 ~ /^[0-9]+$/ {
-        print $1, $9
+        pair = $1 " " $9
+        count[pair]++
     }
-' "$file" \
-| awk '{count[$1" "$2]++} END {for (key in count) print count[key], key}' \
-| sort -nr
+    END {
+        for (pair in count) {
+            print count[pair], pair
+        }
+    }
+' "$file" | sort -nr
 

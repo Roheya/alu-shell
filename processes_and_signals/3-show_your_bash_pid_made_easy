@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Display PID and process name for processes containing bash
+
+cat /proc/*/comm 2>/dev/null | grep -n bash | awk -F: '{print $1, $2}'
+

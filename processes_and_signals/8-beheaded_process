@@ -4,8 +4,8 @@
 pid=$(pgrep -f 7-highlander)
 
 if [ -n "$pid" ]; then
-    kill "$pid"
-    echo "OK"
+    kill -9 "$pid" && echo "OK"
 fi
+
 
 

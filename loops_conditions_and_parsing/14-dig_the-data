@@ -7,13 +7,12 @@ file="${1:-access.log}"
 [ -s "$file" ] || exit 0
 
 awk '
-    # Only process lines that look like proper Apache logs:
-    # IP at start, date in field 4, request in field 6, status code in field 9
+    # Only process lines that look like proper Apache logs
     $1 ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/ &&
     $4 ~ /^
 
 \[/ &&
-    $6 ~ /^"/ &&
+    $6 ~ /^"[A-Z]+/ &&
     $9 ~ /^[0-9]+$/ {
         print $1, $9
     }

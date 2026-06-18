@@ -6,14 +6,24 @@ file="${1:-access.log}"
 # Exit silently if file is missing or empty
 [ -s "$file" ] || exit 0
 
-# Only process lines where $1 looks like an IP and $9 looks like a numeric HTTP code
 awk '
+    # Only process lines with a valid IP and numeric HTTP code
     $1 ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/ && $9 ~ /^[0-9]+$/ {
-        count[$1" "$9]++
+        key = $1 " " $9
+        count[key]++
     }
     END {
-        for (key in count) {
-            print count[key], key
+        # gawk supports PROCINFO["sorted_in"] to sort keys
+        if (PROCINFO["sorted_in"]) {
+            PROCINFO["sorted_in"] = "@val_num_desc"
+            for (k in count) {
+                print count[k], k
+            }
+        } else {
+            # fallback: unsorted output, pipe to sort -nr
+            for (k in count) {
+                print count[k], k
+            }
         }
     }
 ' "$file" | sort -nr

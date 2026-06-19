@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Display the PID and process name of processes containing "bash"
+# This script displays the PID and name of processes containing "bash"
 
 for pid in /proc/[0-9]*; do
-    pid=$(basename "$pid")
-    if [ -f "/proc/$pid/comm" ]; then
-        comm=$(cat "/proc/$pid/comm")
-        if [[ "$comm" == *"bash"* ]]; then
-            echo "$pid $comm"
-        fi
+    pid=$(basename "$pid")   # correct command substitution
+    comm=$(cat "/proc/$pid/comm" 2>/dev/null)
+
+    # Skip if comm contains bash, BUT exclude this script and parent shell
+    if [[ "$comm" == *"bash"* ]] && [ "$pid" != "$$" ] && [ "$pid" != "$PPID" ]; then
+        echo "$pid $comm"
     fi
 done
 

@@ -2,11 +2,11 @@
 # Display the PID and process name of processes containing "bash"
 
 for proc in /proc/[0-9]*; do
-    pid=$(basename "$proc")
-    if [ -r "$proc/comm" ]; then
-        name=$(cat "$proc/comm")
-        if echo "$name" | grep -q "foobar"; then
-            echo "$pid $name"
+    pid=$(basename "$pid")
+    if [ -f "/proc/$pid/comm" ]; then
+        comm=$(cat "/proc/$pid/comm")
+        if [[ "$comm" == *"bash"* ]]; then
+            echo "$pid $comm"
         fi
     fi
 done

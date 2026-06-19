@@ -3,9 +3,11 @@
 
 pkill -f 7-highlander
 
-if pgrep -f 7-highlander > /dev/null; then
-  echo "Process still running"
-else
-  echo "OK"
-fi
+# Keep checking until process is gone
+while pgrep -f 7-highlander > /dev/null; do
+  sleep 1
+done
+
+echo "OK"
+
 

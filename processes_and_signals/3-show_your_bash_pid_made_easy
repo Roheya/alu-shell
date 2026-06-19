@@ -2,11 +2,11 @@
 # This script displays the PID and name of processes containing "bash"
 
 for pid in /proc/[0-9]*; do
-    pid=$(basename "$pid")   # correct command substitution
+    pid=$(basename "$pid")
     comm=$(cat "/proc/$pid/comm" 2>/dev/null)
 
-    # Skip if comm contains bash, BUT exclude this script and parent shell
-    if [[ "$comm" == *"bash"* ]] && [ "$pid" != "$$" ] && [ "$pid" != "$PPID" ]; then
+    # Skip if comm contains bash, BUT exclude this script, parent shell, and PID 1
+    if [[ "$comm" == *"bash"* ]] && [ "$pid" != "$$" ] && [ "$pid" != "$PPID" ] && [ "$pid" != "1" ]; then
         echo "$pid $comm"
     fi
 done

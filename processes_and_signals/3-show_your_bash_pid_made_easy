@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Display the PID and process name of processes containing "bash"
 
-for proc in /proc/[0-9]*; do
+for pid in /proc/[0-9]*; do
     pid=$(basename "$pid")
     if [ -f "/proc/$pid/comm" ]; then
         comm=$(cat "/proc/$pid/comm")

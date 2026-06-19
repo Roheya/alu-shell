@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
-# Kill the process started by 7-highlander
+# Kill the process started by 7-highland
 
-pid=$(pgrep -f 7-highlander)
-
-if [ -n "$pid" ]; then
-    kill -9 "$pid"
-fi
-
-echo "OK"
+pkill -f 7-highlander
 
 

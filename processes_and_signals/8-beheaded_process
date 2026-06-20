@@ -10,4 +10,15 @@ while pgrep -f 7-highlander > /dev/null; do
 done
 
 echo "OK"
+#!/usr/bin/env bash
+# Kill the process started by 7-highlander
+
+pkill -9 -f 7-highlander
+
+while pgrep -f 7-highlander > /dev/null
+do
+  sleep 1
+done
+
+echo "OK"
 

@@ -3,10 +3,3 @@
 
 pkill -9 -f 7-highlander
 
-while pgrep -f 7-highlander > /dev/null
-do
-  sleep 1
-done
-
-echo "OK"
-

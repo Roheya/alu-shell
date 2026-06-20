@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
-# Kill the process started by 7-highland
 # Kill the process started by 7-highlander
 
-pkill -f 7-highlander
+# Send SIGKILL to ensure termination
+pkill -9 -f 7-highlander
 
-if pgrep -f 7-highlander > /dev/null; then
-  echo "Process still running"
-else
-  echo "OK"
-fi
+# Wait until the process is gone
+while pgrep -f 7-highlander > /dev/null; do
+  sleep 1
+done
+
+echo "OK"
+
